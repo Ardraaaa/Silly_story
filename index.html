@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silly Story Generator</title>
+    <style>
+        label {
+            font-weight:bold;
+        }
+        input[type="text"] {
+            padding: 5px;
+            width: 150px;
+        }
+        div {
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+    <label for="customName">Enter custom name:</label>
+    <input id="customName" type="text" placeholder=""/>
+    </div>
+    <div>
+        <label for="us">US</label>
+        <input type="radio" id="us" name="region" checked>
+        <label for="uk">UK</label>
+        <input type="radio" id="uk" name="region">
+    </div>
+
+    <button id="generate">Generate random story</button>
+
+    <p id="story" style="display: none;"></p>
+
+    <script>
+        
+        const generateButton = document.getElementById('generate');
+        const story = document.getElementById('story');
+
+        
+        const storyText = "It was 94 fahrenheit outside, so Willy the Goblin went for a walk. When they got to the soup kitchen, they stared in horror for a few moments, then turned into a slug and crawled away. Bob saw the whole thing, but was not surprised — Willy the Goblin weighs 300 pounds, and it was a hot day.";
+
+        
+        const characters = ['Willy the Goblin', 'Bigfoot', 'Father Christmas'];
+        const actions = ['went for a walk', 'found a mysterious treasure', 'started dancing'];
+        const places = ['the soup kitchen', 'a haunted forest', 'the local market'];
+
+        
+        function randomValueFromArray(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+        function convertToUK(story) {
+            let temperature = (94 - 32) * 5 / 9;
+            temperature = Math.round(temperature) + ' centigrade';
+
+            let weight = 300 / 14;
+            weight = Math.round(weight) + ' stone';
+
+            let newStory = story.replace('94 fahrenheit', temperature);
+            newStory = newStory.replace('300 pounds', weight);
+            
+            return newStory;
+        }
+
+        
+        function generateStory() {
+            let newStory = storyText;
+
+            const customName = document.getElementById('customName').value;
+            const isUK = document.getElementById('uk').checked;
+
+            if (customName !== '') {
+                newStory = newStory.replace('Bob', customName);
+            }
+
+            newStory = newStory.replace('Willy the Goblin', randomValueFromArray(characters));
+            newStory = newStory.replace('went for a walk', randomValueFromArray(actions));
+            newStory = newStory.replace('the soup kitchen', randomValueFromArray(places));
+
+            if (isUK) {
+                newStory = convertToUK(newStory);
+            }
+
+            story.textContent = newStory;
+            story.style.display = 'block';
+            story.style.backgroundColor = 'goldenrod';
+        }
+
+        generateButton.addEventListener('click', generateStory);
+    </script>
+</body>
+</html>
